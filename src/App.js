@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import Layout from './Components/Layout';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Guest from './Components/Guest';
+import { createContext } from 'react';
 
-function App() {
+export const GlobalContext = createContext()
+
+const globals = {
+  auth: (arg) => JSON.parse(localStorage.getItem(arg)),
+  setAuth: (arg, data) => localStorage.setItem(arg, JSON.stringify(data)),
+  flushAuth: (arg, data) => localStorage.removeItem(arg),
+}
+
+function App() { 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <GlobalContext.Provider value={ { ...globals } }>
+      <Router>
+          <Routes>
+            <Route exact path="/" element={<Guest/>}/>
+            <Route exact path="/feed" element={<Layout GlobalContext={GlobalContext}/>}/>
+          </Routes>
+      </Router>
+    </GlobalContext.Provider>
+  ); 
 }
 
 export default App;
