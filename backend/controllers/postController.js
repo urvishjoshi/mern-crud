@@ -13,6 +13,13 @@ module.exports = () => { return {
         const post = await Post.create({ title, message, owner: user._id })
         success(res, 'Post created successfully', post)
     } catch (err) { error(res, err) } },
+
+    async updatePost(req, res) { try {
+        const { title, message } = req.body
+        
+        await Post.findByIdAndUpdate(req.params.id, { title, message })
+        success(res, 'Post updated successfully')
+    } catch (err) { error(res, err) } },
     
     async delete(req, res) { try {
         await Post.findByIdAndDelete(req.params.id)

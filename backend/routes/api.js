@@ -11,6 +11,7 @@ router.post('/signin', authController().login)
 // post
 router.get('/feed', auth, postController().feed)
 router.post('/post', auth, postController().post)
+router.put('/post/:id', auth, postController().updatePost)
 router.delete('/post/:id', auth, postController().delete)
 
 module.exports = router

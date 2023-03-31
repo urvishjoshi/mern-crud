@@ -4,8 +4,11 @@ import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { GlobalContext } from '../../App';
+import Container from 'react-bootstrap/Container'
+import { Col } from 'react-bootstrap';
 
-export default function Container() {
+// eslint-disable-next-line import/no-anonymous-default-export
+export default () => {
   const { auth, flushAuth } = useContext(GlobalContext)
   const authData = auth('authData')
   const navigate = useNavigate()
@@ -18,7 +21,7 @@ export default function Container() {
       setPosts(response.data.data)
     } catch (error) {
       flushAuth('authData')
-      return navigate('/')
+      navigate('/')
     }
   }
 
@@ -28,18 +31,19 @@ export default function Container() {
   }, [])
 
   return (
-    <div className="container-fluid my-3">
-        <div className="container col-6">
-          <Post getData={getData} />
+    <Container fluid className="my-3">
+      <Container className="col-6">
 
-              <div className="col-11 mx-auto mt-4" id="feed">
-                {!posts && <i className="text-muted text-center d-block">No posts</i>}
+        <Post getData={getData} />
 
-                {posts && posts.map(post => <Feed getData={getData} key={post._id} post={post} /> ) }
-                
-              </div>
+        <Col lg={11} className="mx-auto mt-4" id="feed">
+          { !posts && <i className="text-muted text-center d-block">No posts</i> }
+          { posts && posts.map(post => 
+            <Feed getData={getData} key={post._id} post={post} /> 
+          ) }
+        </Col>
 
-        </div>
-    </div>
+      </Container>
+    </Container>
   );
 }
